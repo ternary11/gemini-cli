@@ -1,0 +1,1 @@
+gemini --yolo "Monitor the RavenDB change feed. If a new horse pedigree is detected, execute the PyPedal COI calculation on the VM and commit the results to the repo. If you encounter a dependency error, fix it autonomously."
