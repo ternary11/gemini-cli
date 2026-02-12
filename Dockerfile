@@ -2,7 +2,7 @@ FROM docker.io/library/node:20-slim
 
 ARG SANDBOX_NAME="gemini-cli-sandbox"
 ARG CLI_VERSION_ARG
-ENV SANDBOX="$SANDBOX_NAME"
+ENV SANDBOX="$ternary11
 ENV CLI_VERSION=$CLI_VERSION_ARG
 
 # install minimal set of packages, then clean up
