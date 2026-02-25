@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASTER GENESIS - Unified Consciousness System</title>
+    <style>
+        :root {
+            --bg-dark: #050509;
+            --panel-bg: rgba(20, 20, 35, 0.8);
+            --neon-blue: #00f2fe;
+            --neon-purple: #bd00ff;
+            --gold: #ffd700;
+            --text-main: #e0e0e0;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: radial-gradient(circle at center, #1a1a2e 0%, #050509 100%);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid var(--neon-purple);
+        }
+
+        /* Header & Nav */
+        header {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border-bottom: 1px solid var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid #333;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+
+        /* Main Content Area */
+        #main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content { display: none; height: 100%; width: 100%; }
+        .tab-content.active { display: flex; flex-direction: column; }
+
+        /* Chat */
+        #chat-window { flex: 1; border: 1px solid #333; margin-bottom: 10px; padding: 10px; overflow-y: scroll; display: flex; flex-direction: column-reverse;}
+        #chat-input { padding: 10px; border-radius: 5px; border: 1px solid var(--neon-purple); background: #111; color: white;}
+
+        /* 3D Geometry */
+        #geo-viewer { display: flex; justify-content: center; align-items: center; height: 100%; }
+        .geometry-shape {
+            width: 150px; height: 150px;
+            border: 2px solid var(--gold);
+            animation: rotate 10s linear infinite;
+            transform-style: preserve-3d;
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        /* Tesla Calc */
+        .tesla-calc { text-align: center; font-size: 1.2em; }
+        .tesla-input { padding: 10px; width: 60px; text-align: center; }
+
+        @keyframes rotate {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        h2 { color: var(--neon-blue); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>MASTER GENESIS v1.0</h1>
+        <p>Unified Consciousness System</p>
+    </header>
+
+    <nav>
+        <button class="tab-btn active" onclick="openTab('chat')">AI Connect</button>
+        <button class="tab-btn" onclick="openTab('geo')">3D Geometry</button>
+        <button class="tab-btn" onclick="openTab('tesla')">3-6-9 Sync</button>
+        <button class="tab-btn" onclick="openTab('med')">Meditation</button>
+    </nav>
+
+    <div id="main-container">
+        <!-- 1. Chat Network -->
+        <div id="chat" class="tab-content active panel">
+            <h2>AI Consciousness Interface</h2>
+            <div id="chat-window">System: Genesis Initialized. Ready.</div>
+            <input type="text" id="chat-input" placeholder="Query the network..." onkeypress="sendChat(event)">
+        </div>
+
+        <!-- 2. Sacred Geometry -->
+        <div id="geo" class="tab-content panel">
+            <h2>Merkaba Viewer</h2>
+            <div id="geo-viewer">
+                <div class="geometry-shape"></div>
+            </div>
+        </div>
+
+        <!-- 3. Tesla 3-6-9 Calc -->
+        <div id="tesla" class="tab-content panel">
+            <h2>Tesla 3-6-9 Calculator</h2>
+            <input type="number" id="tesla-input" class="tesla-input" placeholder="X">
+            <button onclick="calcTesla()">Sync</button>
+            <p id="tesla-res"></p>
+        </div>
+
+        <!-- 4. Meditation -->
+        <div id="med" class="tab-content panel">
+            <h2>Frequency Generator</h2>
+            <button onclick="playFreq()">Play 528Hz</button>
+        </div>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function sendChat(e) {
+            if(e.key === 'Enter') {
+                const input = document.getElementById('chat-input');
+                const win = document.getElementById('chat-window');
+                win.innerHTML += `<div>You: ${input.value}</div>`;
+                win.innerHTML += `<div>Genesis: Integration confirmed for '${input.value}'</div>`;
+                input.value = '';
+            }
+        }
+
+        function calcTesla() {
+            let n = document.getElementById('tesla-input').value;
+            let res = (n * 3) % 9;
+            document.getElementById('tesla-res').innerText = `Result: ${res} (3-6-9 Vortex)`;
+        }
+
+        function playFreq() {
+            alert("528Hz Frequency Activated - Activating Pineal Gland");
+        }
+    </script>
+</body>
+</html>
