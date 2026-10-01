@@ -4,29 +4,36 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AuthType } from '@google/gemini-cli-core';
-import { loadEnvironment } from './settings.js';
+import { AuthType, loadApiKey } from '@google/gemini-cli-core';
+import { loadEnvironment, loadSettings } from './settings.js';
 
-export const validateAuthMethod = (authMethod: string): string | null => {
-  loadEnvironment();
+export async function validateAuthMethod(
+  authMethod: string,
+): Promise<string | null> {
+  loadEnvironment(loadSettings().merged, process.cwd());
   if (
     authMethod === AuthType.LOGIN_WITH_GOOGLE ||
-    authMethod === AuthType.CLOUD_SHELL
+    authMethod === AuthType.COMPUTE_ADC
   ) {
     return null;
   }
 
   if (authMethod === AuthType.USE_GEMINI) {
-    if (!process.env.GEMINI_API_KEY) {
-      return 'GEMINI_API_KEY environment variable not found. Add that to your environment and try again (no reload needed if using .env)!';
+    const key = process.env['GEMINI_API_KEY'] || (await loadApiKey());
+    if (!key) {
+      return (
+        'When using Gemini API, you must specify the GEMINI_API_KEY environment variable.\n' +
+        'Update your environment and try again (no reload needed if using .env)!'
+      );
     }
     return null;
   }
 
   if (authMethod === AuthType.USE_VERTEX_AI) {
     const hasVertexProjectLocationConfig =
-      !!process.env.GOOGLE_CLOUD_PROJECT && !!process.env.GOOGLE_CLOUD_LOCATION;
-    const hasGoogleApiKey = !!process.env.GOOGLE_API_KEY;
+      !!process.env['GOOGLE_CLOUD_PROJECT'] &&
+      !!process.env['GOOGLE_CLOUD_LOCATION'];
+    const hasGoogleApiKey = !!process.env['GOOGLE_API_KEY'];
     if (!hasVertexProjectLocationConfig && !hasGoogleApiKey) {
       return (
         'When using Vertex AI, you must specify either:\n' +
@@ -39,4 +46,4 @@ export const validateAuthMethod = (authMethod: string): string | null => {
   }
 
   return 'Invalid auth method selected.';
-};
+}
